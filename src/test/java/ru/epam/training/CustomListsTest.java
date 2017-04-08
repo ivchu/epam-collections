@@ -399,27 +399,53 @@ public class CustomListsTest {
     }
 
     @Test(expected = NoSuchElementException.class)
-    public void testThatListIteratorHasNextThrowsNSEEForNext(){
+    public void testThatListIteratorHasNextThrowsNSEEForNext() {
         ListIterator<String> iterator = list.listIterator();
         iterator.next();
     }
 
     @Test(expected = NoSuchElementException.class)
-    public void testThatListIteratorHasNextThrowsNSEEForPrevious(){
+    public void testThatListIteratorHasNextThrowsNSEEForPrevious() {
         ListIterator<String> iterator = list.listIterator();
         iterator.previous();
     }
 
     @Test(expected = IllegalStateException.class)
-    public void testThatListIteratorHasNextThrowsISEForSet(){
+    public void testThatListIteratorHasNextThrowsISEForSet() {
         ListIterator<String> iterator = list.listIterator();
         iterator.set("s");
     }
 
     @Test(expected = IllegalStateException.class)
-    public void testThatListIteratorHasNextThrowsISEForRemove(){
+    public void testThatListIteratorHasNextThrowsISEForRemove() {
         ListIterator<String> iterator = list.listIterator();
         iterator.remove();
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatContainAllThrowsNAEIfParameterIsNull() {
+        fillList();
+        list.containsAll(null);
+    }
+
+    @Test
+    public void testThatContainAllWorksWell() {
+        fillList();
+        ArrayList<String> notContainsInList = new ArrayList<>();
+        notContainsInList.add(null);
+        notContainsInList.add("aa1a");
+        notContainsInList.add("hhh");
+        notContainsInList.add("sad");
+        notContainsInList.add("hhh");
+        notContainsInList.add("aa2a");
+        ArrayList<String> containsInList = new ArrayList<>();
+        containsInList.add(null);
+        containsInList.add("aa1a");
+        containsInList.add("hhh");
+        containsInList.add("hhh");
+        containsInList.add("aa2a");
+        assertTrue(list.containsAll(containsInList));
+        assertFalse(list.containsAll(notContainsInList));
     }
 
     private void fillList() {

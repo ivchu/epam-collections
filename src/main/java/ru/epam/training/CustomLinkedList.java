@@ -219,12 +219,17 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return null;
+        return new ListIter(0);
     }
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return false;
+        for (Object fromC : c) {
+            if (!contains(fromC)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
