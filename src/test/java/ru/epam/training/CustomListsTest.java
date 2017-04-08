@@ -423,7 +423,7 @@ public class CustomListsTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void testThatContainAllThrowsNAEIfParameterIsNull() {
+    public void testThatContainAllThrowsNPEIfParameterIsNull() {
         fillList();
         list.containsAll(null);
     }
@@ -446,6 +446,33 @@ public class CustomListsTest {
         containsInList.add("aa2a");
         assertTrue(list.containsAll(containsInList));
         assertFalse(list.containsAll(notContainsInList));
+    }
+
+    @Test
+    public void testThatRemoveAllWorksWell() {
+        fillList();
+        ArrayList<String> containsInList = new ArrayList<>();
+        containsInList.add(null);
+        containsInList.add("aa1a");
+        containsInList.add("hhh");
+        containsInList.add("hhh");
+        containsInList.add("aa2a");
+        ArrayList<String> notContainsInList = new ArrayList<>();
+        notContainsInList.add("sad");
+        notContainsInList.add("sa1d");
+        notContainsInList.add("sad2");
+        assertFalse(list.removeAll(notContainsInList));
+        assertTrue(list.removeAll(containsInList));
+        assertFalse(list.contains("aa2a"));
+        assertFalse(list.contains("aa1a"));
+        assertTrue(list.contains("hhh"));
+        assertTrue(list.contains(null));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatRemoveAllThrowsNPEIfParameterIsNull() {
+        fillList();
+        list.removeAll(null);
     }
 
     private void fillList() {
