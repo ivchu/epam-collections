@@ -257,7 +257,19 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        return null;
+        if ((fromIndex > toIndex) || (toIndex > size) || (fromIndex < 0)) {
+            throw new IndexOutOfBoundsException();
+        }
+        if ((toIndex < 0) || (fromIndex < 0)) {
+            throw new IndexOutOfBoundsException();
+        }
+        List<T> newList = new CustomLinkedList<>();
+        Node<T> currentNode = getNodeByIndex(fromIndex);
+        for (int i = fromIndex; i <= toIndex; i++) {
+            newList.add(currentNode.value);
+            currentNode = currentNode.next;
+        }
+        return newList;
     }
 
     private class ListIter implements ListIterator<T> {

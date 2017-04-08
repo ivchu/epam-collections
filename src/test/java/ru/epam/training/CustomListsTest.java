@@ -512,6 +512,64 @@ public class CustomListsTest {
         list.retainAll(null);
     }
 
+    @Test
+    public void testThatSubListCreatesCorrectCollection() {
+        fillList();
+        int subFrom = 2;
+        int subTo = 5;
+        List<String> subList = list.subList(subFrom, subTo);
+        ArrayList<String> mustBe = new ArrayList<>();
+        for (int i = subFrom; i < subTo; i++) {
+            mustBe.add(list.get(i));
+        }
+        for (String str : subList) {
+            assertTrue(mustBe.contains(str));
+        }
+        for (String str : mustBe) {
+            assertTrue(subList.contains(str));
+        }
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testThatSubListFirstParameterCantBeNegative(){
+        fillList();
+        int subFrom = -1;
+        int subTo = 5;
+        list.subList(subFrom, subTo);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testThatSubListSecondParameterCantBeNegative(){
+        fillList();
+        int subFrom = 0;
+        int subTo = -1;
+        list.subList(subFrom, subTo);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testThatSubListBothParametersCantBeNegative(){
+        fillList();
+        int subFrom = -7;
+        int subTo = -1;
+        list.subList(subFrom, subTo);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testThatSubListFromCantBeMoreThanTo(){
+        fillList();
+        int subFrom = 8;
+        int subTo = 6;
+        list.subList(subFrom, subTo);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testThatSubListSecondParameterCantBeMoreThanSize(){
+        fillList();
+        int subFrom = 0;
+        int subTo = 19;
+        list.subList(subFrom, subTo);
+    }
+
     private void fillList() {
         list.add("hhh");
         list.add("aa0a");
