@@ -264,6 +264,9 @@ public class CustomLinkedList<T> implements List<T> {
 
         @Override
         public T next() {
+            if (!this.hasNext()) {
+                throw new NoSuchElementException();
+            }
             returned = next;
             next = next.next;
             nextIndex++;
@@ -277,6 +280,9 @@ public class CustomLinkedList<T> implements List<T> {
 
         @Override
         public T previous() {
+            if (!this.hasPrevious()) {
+                throw new NoSuchElementException();
+            }
             if (next == null) {
                 next = last;
                 returned = next;
@@ -300,15 +306,18 @@ public class CustomLinkedList<T> implements List<T> {
 
         @Override
         public void remove() {
+            if (returned == null)
+                throw new IllegalStateException();
             CustomLinkedList.this.removeNode(returned);
             nextIndex--;
         }
 
         @Override
         public void set(T t) {
-            if (returned != null) {
-                returned.value = t;
-            } else throw new IllegalStateException();
+            if (returned == null) {
+                throw new IllegalStateException();
+            }
+            returned.value = t;
         }
 
         @Override

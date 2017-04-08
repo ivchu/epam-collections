@@ -398,6 +398,30 @@ public class CustomListsTest {
         assertEquals(prevSize - 1, list.size());
     }
 
+    @Test(expected = NoSuchElementException.class)
+    public void testThatListIteratorHasNextThrowsNSEEForNext(){
+        ListIterator<String> iterator = list.listIterator();
+        iterator.next();
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testThatListIteratorHasNextThrowsNSEEForPrevious(){
+        ListIterator<String> iterator = list.listIterator();
+        iterator.previous();
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testThatListIteratorHasNextThrowsISEForSet(){
+        ListIterator<String> iterator = list.listIterator();
+        iterator.set("s");
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testThatListIteratorHasNextThrowsISEForRemove(){
+        ListIterator<String> iterator = list.listIterator();
+        iterator.remove();
+    }
+
     private void fillList() {
         list.add("hhh");
         list.add("aa0a");
