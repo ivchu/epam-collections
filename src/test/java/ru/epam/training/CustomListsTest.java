@@ -475,6 +475,43 @@ public class CustomListsTest {
         list.removeAll(null);
     }
 
+    @Test
+    public void testThatRetainAllRemoveElements() {
+        fillList();
+        ArrayList<String> notContainsInList = new ArrayList<>();
+        notContainsInList.add("sad");
+        notContainsInList.add("sa1d");
+        notContainsInList.add(null);
+        notContainsInList.add("aa1a");
+        notContainsInList.add("hhh");
+        notContainsInList.add("hhh");
+        notContainsInList.add("aa2a");
+        notContainsInList.add("sad2");
+        assertTrue(list.retainAll(notContainsInList));
+        assertFalse(list.contains("sss"));
+        assertFalse(list.contains("aa3a"));
+        assertTrue(list.contains("hhh"));
+        assertTrue(list.contains(null));
+    }
+
+    @Test
+    public void testThatRetainAllReturnsFalseIfNorRemovedAnyThing() {
+        fillList();
+        ArrayList<String> containsInList = new ArrayList<>();
+        containsInList.addAll(list);
+        assertFalse(list.retainAll(containsInList));
+        assertTrue(list.contains("ssss"));
+        assertTrue(list.contains("aa3a"));
+        assertTrue(list.contains("hhh"));
+        assertTrue(list.contains(null));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatRetainAllThrowsNPEIfParameterIsNull() {
+        fillList();
+        list.retainAll(null);
+    }
+
     private void fillList() {
         list.add("hhh");
         list.add("aa0a");
