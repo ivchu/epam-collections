@@ -190,7 +190,14 @@ public class CustomArrayList<T> implements List<T> {
 
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        return null;
+        if ((fromIndex > toIndex) || (fromIndex < 0) || (toIndex > size)) {
+            throw new IndexOutOfBoundsException();
+        }
+        List<T> result = new CustomArrayList<>();
+        for (int i = fromIndex; i < toIndex; i++) {
+            result.add(this.get(i));
+        }
+        return result;
     }
 
     @Override
