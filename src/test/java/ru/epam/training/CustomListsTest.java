@@ -246,6 +246,15 @@ public class CustomListsTest {
         assertEquals(valueOn3, list.get(4));
     }
 
+    @Test
+    public void testThatAddWithIndexCanAddToEmptyList() {
+        int expectedSize = list.size() + 1;
+        String value = "sob";
+        list.add(0, value);
+        assertEquals(expectedSize, list.size());
+        assertEquals(value, list.get(0));
+    }
+
     @Test(expected = NullPointerException.class)
     public void testThatParametrizedToArrayThrowsNPEIfParamIsNull() {
         list.toArray(null);

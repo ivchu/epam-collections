@@ -61,10 +61,27 @@ public class CustomLinkedList<T> implements List<T> {
             previous = current;
             current = current.next;
         }
-        previous.next = new Node<T>(element);
-        previous = previous.next;
-        previous.next = current;
-        size++;
+        Node<T> newNode = new Node<>(element);
+        if (index == size) {
+            if (last == null) {
+                head.next = newNode;
+                newNode.previous = head;
+                last = newNode;
+                size++;
+            } else {
+                last.next = newNode;
+                newNode.previous = last;
+                last = newNode;
+                size++;
+            }
+        } else {
+            previous.next = newNode;
+            newNode.previous = previous;
+            newNode.next = current;
+            current.previous = newNode;
+            size++;
+
+        }
     }
 
     @Override
