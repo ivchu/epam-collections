@@ -180,12 +180,26 @@ public class CustomArrayList<T> implements List<T> {
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return false;
+        boolean isChanged = false;
+        for (Object fromC : c) {
+            if (this.contains(fromC)) {
+                this.remove(fromC);
+                isChanged = true;
+            }
+        }
+        return isChanged;
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        return false;
+        boolean isChanged = false;
+        for (T fromThisColl : this) {
+            if (!c.contains(fromThisColl)) {
+                remove(fromThisColl);
+                isChanged = true;
+            }
+        }
+        return isChanged;
     }
 
     @Override
