@@ -390,10 +390,12 @@ public class CustomLinkedList<T> implements List<T> {
 
         @Override
         public void remove() {
-            if (returned == null)
+            if (returned == null) {
                 throw new IllegalStateException();
+            }
             CustomLinkedList.this.removeNode(returned);
             nextIndex--;
+            returned = null;
         }
 
         @Override
@@ -407,6 +409,7 @@ public class CustomLinkedList<T> implements List<T> {
         @Override
         public void add(T t) {
             CustomLinkedList.this.add(nextIndex++, t);
+            returned = null;
         }
     }
 

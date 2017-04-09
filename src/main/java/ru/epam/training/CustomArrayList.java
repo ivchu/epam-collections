@@ -190,17 +190,88 @@ public class CustomArrayList<T> implements List<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return null;
+        return new ListIter(0);
     }
 
     @Override
     public ListIterator<T> listIterator() {
-        return null;
+        return new ListIter(0);
     }
 
     @Override
     public ListIterator<T> listIterator(int index) {
-        return null;
+        return new ListIter(index);
+    }
+
+    private class ListIter implements ListIterator<T>{
+        int returned = -1;
+        int cursor;
+
+        ListIter(int index){
+            cursor = index;
+        }
+        @Override
+        public boolean hasNext() {
+            return cursor < size;
+        }
+
+        @Override
+        public T next() {
+            if (!this.hasNext()) {
+                throw new NoSuchElementException();
+            }
+            returned = cursor;
+            return (T) data[cursor++];
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            return cursor > 0;
+        }
+
+        @Override
+        public T previous() {
+            if (!this.hasPrevious()){
+                throw  new NoSuchElementException();
+            }
+            returned = cursor;
+            return (T) data[cursor--];
+        }
+
+        @Override
+        public int nextIndex() {
+            return cursor;
+        }
+
+        @Override
+        public int previousIndex() {
+            return cursor - 1;
+        }
+
+        @Override
+        public void remove() {
+            if (returned == -1) {
+                throw new IllegalStateException();
+            }
+            CustomArrayList.this.remove(returned);
+            cursor--;
+            returned = -1;
+        }
+
+        @Override
+        public void set(T t) {
+            if (returned == -1) {
+                throw new IllegalStateException();
+            }
+            CustomArrayList.this.set(returned, t);
+        }
+
+        @Override
+        public void add(T t) {
+            CustomArrayList.this.add(returned, t);
+            returned = -1;
+            cursor++;
+        }
     }
 
     private void ensureCapacity(int size) {

@@ -407,6 +407,52 @@ public class CustomListsTest {
         assertEquals(prevSize - 1, list.size());
     }
 
+    @Test
+    public void testThatListIteratorNextIndexReturnsCorrectValue() {
+        fillList();
+        int nextIndex = 5;
+        ListIterator<String> iterator = list.listIterator(nextIndex);
+        assertEquals(nextIndex, iterator.nextIndex());
+    }
+
+    @Test
+    public void testThatListIteratorPreviousIndexReturnsCorrectValue() {
+        fillList();
+        int index = 5;
+        int expectedPreviousIndex = index - 1;
+        ListIterator<String> iterator = list.listIterator(index);
+        assertEquals(expectedPreviousIndex, iterator.previousIndex());
+    }
+
+    @Test
+    public void testThatListIteratorCursorStayInRightPlaceAfterAllOperations() {
+        fillList();
+        int initCursor = 5;
+        int expectedCursor = 5;
+        ListIterator<String> iterator = list.listIterator(initCursor);
+        iterator.next();
+        expectedCursor++;
+        iterator.add("");
+        expectedCursor++;
+        iterator.next();
+        expectedCursor++;
+        iterator.previous();
+        expectedCursor--;
+        iterator.set("ss");
+        iterator.add("sss");
+        expectedCursor++;
+        iterator.next();
+        expectedCursor++;
+        iterator.remove();
+        expectedCursor--;
+        iterator.next();
+        expectedCursor++;
+        iterator.remove();
+        expectedCursor--;
+        assertEquals(expectedCursor, iterator.nextIndex());
+    }
+
+
     @Test(expected = NoSuchElementException.class)
     public void testThatListIteratorHasNextThrowsNSEEForNext() {
         ListIterator<String> iterator = list.listIterator();
