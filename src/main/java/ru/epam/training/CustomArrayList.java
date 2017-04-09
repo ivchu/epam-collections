@@ -48,12 +48,12 @@ public class CustomArrayList<T> implements List<T> {
     @Override
     public boolean remove(Object o) {
         for (int i = 0; i < size; i++) {
-            if (data[i] == null){
-                if (o == null){
+            if (data[i] == null) {
+                if (o == null) {
                     remove(i);
                     return true;
                 }
-            }else if (data[i].equals(o)) {
+            } else if (data[i].equals(o)) {
                 remove(i);
                 return true;
             }
@@ -139,12 +139,12 @@ public class CustomArrayList<T> implements List<T> {
     @Override
     public int indexOf(Object o) {
         for (int i = 0; i < size; i++) {
-            if (data[i] == null){
-                if(o == null){
+            if (data[i] == null) {
+                if (o == null) {
                     return i;
                 }
             } else {
-                if (data[i].equals(o)){
+                if (data[i].equals(o)) {
                     return i;
                 }
             }
@@ -155,12 +155,12 @@ public class CustomArrayList<T> implements List<T> {
     @Override
     public int lastIndexOf(Object o) {
         for (int i = size - 1; i >= 0; i--) {
-            if (data[i] == null){
-                if(o == null){
+            if (data[i] == null) {
+                if (o == null) {
                     return i;
                 }
             } else {
-                if (data[i].equals(o)){
+                if (data[i].equals(o)) {
                     return i;
                 }
             }
@@ -170,7 +170,12 @@ public class CustomArrayList<T> implements List<T> {
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return false;
+        for (Object fromC : c) {
+            if (!this.contains(fromC)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -203,13 +208,14 @@ public class CustomArrayList<T> implements List<T> {
         return new ListIter(index);
     }
 
-    private class ListIter implements ListIterator<T>{
+    private class ListIter implements ListIterator<T> {
         int returned = -1;
         int cursor;
 
-        ListIter(int index){
+        ListIter(int index) {
             cursor = index;
         }
+
         @Override
         public boolean hasNext() {
             return cursor < size;
@@ -231,8 +237,8 @@ public class CustomArrayList<T> implements List<T> {
 
         @Override
         public T previous() {
-            if (!this.hasPrevious()){
-                throw  new NoSuchElementException();
+            if (!this.hasPrevious()) {
+                throw new NoSuchElementException();
             }
             returned = cursor;
             return (T) data[cursor--];
