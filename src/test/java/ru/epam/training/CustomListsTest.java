@@ -531,7 +531,7 @@ public class CustomListsTest {
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void testThatSubListFirstParameterCantBeNegative(){
+    public void testThatSubListFirstParameterCantBeNegative() {
         fillList();
         int subFrom = -1;
         int subTo = 5;
@@ -539,7 +539,7 @@ public class CustomListsTest {
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void testThatSubListSecondParameterCantBeNegative(){
+    public void testThatSubListSecondParameterCantBeNegative() {
         fillList();
         int subFrom = 0;
         int subTo = -1;
@@ -547,7 +547,7 @@ public class CustomListsTest {
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void testThatSubListBothParametersCantBeNegative(){
+    public void testThatSubListBothParametersCantBeNegative() {
         fillList();
         int subFrom = -7;
         int subTo = -1;
@@ -555,7 +555,7 @@ public class CustomListsTest {
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void testThatSubListFromCantBeMoreThanTo(){
+    public void testThatSubListFromCantBeMoreThanTo() {
         fillList();
         int subFrom = 8;
         int subTo = 6;
@@ -563,7 +563,7 @@ public class CustomListsTest {
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void testThatSubListSecondParameterCantBeMoreThanSize(){
+    public void testThatSubListSecondParameterCantBeMoreThanSize() {
         fillList();
         int subFrom = 0;
         int subTo = 19;

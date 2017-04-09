@@ -35,17 +35,6 @@ public class CustomLinkedList<T> implements List<T> {
     }
 
     @Override
-    public Object[] toArray() {
-        Object[] listArray = new Object[size];
-        Node currentNode = head.next;
-        for (int i = 0; i < size; i++) {
-            listArray[i] = currentNode.value;
-            currentNode = currentNode.next;
-        }
-        return listArray;
-    }
-
-    @Override
     public boolean add(T t) {
         Node<T> currentNode = head;
         while (currentNode.hasNext()) {
@@ -57,6 +46,21 @@ public class CustomLinkedList<T> implements List<T> {
         last = newNode;
         size++;
         return false;
+    }
+
+    @Override
+    public void add(int index, T element) {
+        checkBounds(index);
+        Node<T> previous = head;
+        Node<T> current = head.next;
+        for (int i = 0; i < index; i++) {
+            previous = current;
+            current = current.next;
+        }
+        previous.next = new Node<T>(element);
+        previous = previous.next;
+        previous.next = current;
+        size++;
     }
 
     @Override
@@ -101,62 +105,6 @@ public class CustomLinkedList<T> implements List<T> {
         T value = toRemove.value;
         removeNode(toRemove);
         return value;
-    }
-
-    @Override
-    public boolean addAll(Collection<? extends T> c) {
-        return addAll(size, c);
-    }
-
-    @Override
-    public boolean addAll(int index, Collection<? extends T> c) {
-        checkBounds(index);
-        if (c.size() == 0) {
-            return false;
-        }
-        Node<T> previous = head;
-        Node<T> current = head.next;
-        for (int i = 0; i < index; i++) {
-            previous = current;
-            current = current.next;
-        }
-        for (T value : c) {
-            previous.next = new Node<T>(value);
-            previous = previous.next;
-            size++;
-        }
-        previous.next = current;
-        return true;
-    }
-
-    @Override
-    public void add(int index, T element) {
-        checkBounds(index);
-        Node<T> previous = head;
-        Node<T> current = head.next;
-        for (int i = 0; i < index; i++) {
-            previous = current;
-            current = current.next;
-        }
-        previous.next = new Node<T>(element);
-        previous = previous.next;
-        previous.next = current;
-        size++;
-    }
-
-    @Override
-    public <T1> T1[] toArray(T1[] a) {
-        if (a.length < size)
-            a = (T1[]) java.lang.reflect.Array.newInstance(
-                    a.getClass().getComponentType(), size);
-        Node<T> currentNode = head.next;
-        int iter = 0;
-        Object[] array = a;
-        while (currentNode != null) {
-            array[iter++] = currentNode.value;
-            currentNode = currentNode.next;
-        }
-        return a;
     }
 
     @Override
@@ -208,18 +156,60 @@ public class CustomLinkedList<T> implements List<T> {
     }
 
     @Override
+    public Object[] toArray() {
+        Object[] listArray = new Object[size];
+        Node currentNode = head.next;
+        for (int i = 0; i < size; i++) {
+            listArray[i] = currentNode.value;
+            currentNode = currentNode.next;
+        }
+        return listArray;
+    }
+
+    @Override
+    public <T1> T1[] toArray(T1[] a) {
+        if (a.length < size)
+            a = (T1[]) java.lang.reflect.Array.newInstance(
+                    a.getClass().getComponentType(), size);
+        Node<T> currentNode = head.next;
+        int iter = 0;
+        Object[] array = a;
+        while (currentNode != null) {
+            array[iter++] = currentNode.value;
+            currentNode = currentNode.next;
+        }
+        return a;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends T> c) {
+        return addAll(size, c);
+    }
+
+    @Override
+    public boolean addAll(int index, Collection<? extends T> c) {
+        checkBounds(index);
+        if (c.size() == 0) {
+            return false;
+        }
+        Node<T> previous = head;
+        Node<T> current = head.next;
+        for (int i = 0; i < index; i++) {
+            previous = current;
+            current = current.next;
+        }
+        for (T value : c) {
+            previous.next = new Node<T>(value);
+            previous = previous.next;
+            size++;
+        }
+        previous.next = current;
+        return true;
+    }
+
+    @Override
     public ListIterator<T> listIterator(int index) {
         return new ListIter(index);
-    }
-
-    @Override
-    public ListIterator<T> listIterator() {
-        return new ListIter(0);
-    }
-
-    @Override
-    public Iterator<T> iterator() {
-        return new ListIter(0);
     }
 
     @Override
@@ -270,6 +260,49 @@ public class CustomLinkedList<T> implements List<T> {
             currentNode = currentNode.next;
         }
         return newList;
+    }
+
+    @Override
+    public ListIterator<T> listIterator() {
+        return new ListIter(0);
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new ListIter(0);
+    }
+
+    private void checkBounds(int index) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException();
+        }
+    }
+
+    private Node<T> getNodeByIndex(int index) {
+        checkBounds(index);
+        Node<T> current = head.next;
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+        return current;
+    }
+
+    private void removeNode(Node<T> toRemove) {
+        final Node<T> next = toRemove.next;
+        final Node<T> previous = toRemove.previous;
+
+        previous.next = next;
+        toRemove.previous = null;
+
+        if (next == null) {
+            last = previous;
+        } else {
+            next.previous = previous;
+            toRemove.next = null;
+        }
+
+        toRemove.value = null;
+        size--;
     }
 
     private class ListIter implements ListIterator<T> {
@@ -354,39 +387,6 @@ public class CustomLinkedList<T> implements List<T> {
         public void add(T t) {
             CustomLinkedList.this.add(nextIndex++, t);
         }
-    }
-
-    private void checkBounds(int index) {
-        if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException();
-        }
-    }
-
-    private Node<T> getNodeByIndex(int index) {
-        checkBounds(index);
-        Node<T> current = head.next;
-        for (int i = 0; i < index; i++) {
-            current = current.next;
-        }
-        return current;
-    }
-
-    private void removeNode(Node<T> toRemove) {
-        final Node<T> next = toRemove.next;
-        final Node<T> previous = toRemove.previous;
-
-        previous.next = next;
-        toRemove.previous = null;
-
-        if (next == null) {
-            last = previous;
-        } else {
-            next.previous = previous;
-            toRemove.next = null;
-        }
-
-        toRemove.value = null;
-        size--;
     }
 
     private class Node<T> {
