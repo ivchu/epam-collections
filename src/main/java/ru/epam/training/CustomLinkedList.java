@@ -36,16 +36,20 @@ public class CustomLinkedList<T> implements List<T> {
 
     @Override
     public boolean add(T t) {
-        Node<T> currentNode = head;
-        while (currentNode.hasNext()) {
-            currentNode = currentNode.next;
-        }
         Node<T> newNode = new Node<>(t);
-        currentNode.next = newNode;
-        newNode.previous = currentNode;
-        last = newNode;
-        size++;
-        return false;
+        if (last == null) {
+            head.next = newNode;
+            newNode.previous = head;
+            last = newNode;
+            size++;
+            return true;
+        } else {
+            last.next = newNode;
+            newNode.previous = last;
+            last = newNode;
+            size++;
+            return true;
+        }
     }
 
     @Override
