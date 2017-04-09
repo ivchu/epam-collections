@@ -211,7 +211,7 @@ public class CustomArrayList<T> implements List<T> {
     }
 
     private void checkBounds(int index) {
-        if (index < 0 || index >= size) {
+        if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException();
         }
     }
