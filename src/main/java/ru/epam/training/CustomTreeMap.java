@@ -1,13 +1,10 @@
 package ru.epam.training;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
-
     private Node<K, V> root;
+    V oldValue;
 
     @Override
     public int size() {
@@ -46,8 +43,14 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     @Override
     public V put(K key, V value) {
         Objects.requireNonNull(key);
-        root = put(root, key, value);
-        return value;
+        Node<K, V> node = root;
+        if (node == null) {
+            key.compareTo(key);
+            root = new Node<>(key, value);
+            return null;
+        }
+        put(root, key, value);
+        return this.oldValue;
     }
 
     private Node<K, V> put(Node<K, V> node, K key, V value) {
@@ -55,6 +58,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
             return new Node<>(key, value);
         }
         if (node.key.equals(key)) {
+            this.oldValue = node.value;
             node.value = value;
         } else if (node.key.compareTo(key) > 0) {
             node.left = put(node.left, key, value);
@@ -117,6 +121,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
             this.key = key;
             this.value = value;
         }
+
 
     }
 
