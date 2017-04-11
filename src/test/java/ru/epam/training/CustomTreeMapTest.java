@@ -90,7 +90,7 @@ public class CustomTreeMapTest {
 
     @Test(expected = ClassCastException.class)
     public void testThatContainsKeyMethodThrowsExceptionOnWrongKeyClass() {
-        m.put(1, ""); //TODO need to remove
+        m.put(1, "");
         m.containsKey(new String(""));
     }
 
@@ -148,17 +148,46 @@ public class CustomTreeMapTest {
     }
 
     @Test
-    public void testThatIsEmptyWorksCorrectly(){
+    public void testThatIsEmptyWorksCorrectly() {
         assertTrue(m.isEmpty());
         fillTreeMap();
         assertFalse(m.isEmpty());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatMethodRemoveThrowsNPEForNullParameter() {
+        m.remove(null);
+    }
+
+    @Test(expected = ClassCastException.class)
+    public void testThatMethodRemoveThrowsCCEIfForWrongKeyClass() {
+        m.remove(new Object());
+    }
+
+    @Test
+    public void testThatMethodRemoveReturnsNullIfNoSuchKeyInMap() {
+        fillTreeMap();
+        assertThat(m.remove(21), is(nullValue()));
+    }
+
+    @Test
+    public void testThatMethodRemoveReturnsRemovedValue() {
+        fillTreeMap();
+        assertThat(m.remove(1), is("1"));
+    }
+
+
+    @Test
+    public void testThatMethodRemoveRemovesNode() {
+        fillTreeMap();
+        m.remove(1);
+        assertFalse(m.containsKey(1));
     }
 
     @Test
     public void testThatMapCalculateItsSizeProperly() {
 
     }
-
 
 
     private void fillTreeMap() {

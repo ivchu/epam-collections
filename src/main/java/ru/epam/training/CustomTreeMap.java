@@ -20,8 +20,6 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     @Override
     public boolean containsKey(Object key) {
         Objects.requireNonNull(key);
-        if (root == null) return false;
-        root.key.compareTo((K) key);
         return find(root, (K) key) != null;
     }
 
@@ -99,7 +97,50 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public V remove(Object key) {
-        return null;
+        Objects.requireNonNull(key);
+        root = removeNode(root, (K) key);
+        return oldValue;
+    }
+
+    private Node<K, V> removeNode(Node<K, V> node, K key) {
+        if (node == null) {
+            oldValue = null;
+            return null;
+        }
+        if (key.compareTo(node.key) > 0) {
+            node = removeNode(node.right, key);
+        } else if (key.compareTo(node.key) < 0) {
+            node = removeNode(node.left, key);
+        } else {
+            oldValue = node.value;
+            size--;
+            if (node.right == null) {
+                return node.left;
+            }
+            if (node.left == null) {
+                return node.right;
+            }
+            Node<K, V> temp = node;
+            node = getMinNode(node.right);
+            node.right = deleteMinNode(temp.right);
+            node.left = temp.left;
+        }
+        return node;
+    }
+
+    private Node<K, V> deleteMinNode(Node<K, V> node) {
+        if (node.left == null) {
+            return node.right;
+        }
+        node.left = deleteMinNode(node.left);
+        return node;
+    }
+
+    private Node<K, V> getMinNode(Node<K, V> node) {
+        if (node.left == null) {
+            return node;
+        }
+        return getMinNode(node.left);
     }
 
     @Override
