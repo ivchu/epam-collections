@@ -12,6 +12,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNull.notNullValue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -186,11 +187,20 @@ public class CustomTreeMapTest {
 
     @Test
     public void testThatMapCalculateItsSizeProperly() {
-
+        int size = fillTreeMap();
+        assertEquals(size, m.size());
+        m.remove(0);
+        size--;
+        m.remove(1);
+        size--;
+        m.remove(2);
+        size--;
+        assertEquals(size, m.size());
     }
 
 
-    private void fillTreeMap() {
+    private int fillTreeMap() {
+        int size = 16;
         m.put(0, "0");
         m.put(10, "10");
         m.put(1, "1");
@@ -207,6 +217,7 @@ public class CustomTreeMapTest {
         m.put(80, "80");
         m.put(70, "70");
         m.put(60, "60");
+        return size;
     }
 
 

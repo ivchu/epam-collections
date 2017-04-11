@@ -9,7 +9,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
@@ -58,6 +58,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
             oldValue = null;
         }
         if (node == null) {
+            size++;
             return new Node<>(key, value);
         }
         if (node.key.equals(key)) {
