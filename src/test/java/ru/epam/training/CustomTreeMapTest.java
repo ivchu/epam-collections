@@ -153,6 +153,8 @@ public class CustomTreeMapTest {
 
     }
 
+    
+
     private void fillTreeMap() {
         m.put(0, "0");
         m.put(10, "10");
@@ -170,7 +172,6 @@ public class CustomTreeMapTest {
         m.put(80, "80");
         m.put(70, "70");
         m.put(60, "60");
-
     }
 
 
