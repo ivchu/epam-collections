@@ -5,6 +5,7 @@ import java.util.*;
 public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     private Node<K, V> root;
     V oldValue;
+    int size;
 
     @Override
     public int size() {
@@ -19,7 +20,6 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     @Override
     public boolean containsKey(Object key) {
         Objects.requireNonNull(key);
-
         if (root == null) return false;
         root.key.compareTo((K) key);
         return find(root, (K) key) != null;
@@ -48,6 +48,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         if (node == null) {
             key.compareTo(key);
             root = new Node<>(key, value);
+            size++;
             return null;
         }
         put(root, key, value);
@@ -55,6 +56,9 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     }
 
     private Node<K, V> put(Node<K, V> node, K key, V value) {
+        if (oldValue != null) {
+            oldValue = null;
+        }
         if (node == null) {
             return new Node<>(key, value);
         }
