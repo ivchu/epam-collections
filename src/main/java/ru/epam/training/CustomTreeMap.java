@@ -37,7 +37,18 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public V get(Object key) {
-        return null;
+        Objects.requireNonNull(key);
+        Node<K, V> node = root;
+        if (node == null) {
+            return null;
+        } else {
+            if (node.key.compareTo((K) key) > 0) {
+                node = find(node.left, (K) key);
+            } else if (node.key.compareTo((K) key) < 0) {
+                node = find(node.right, (K) key);
+            }
+        }
+        return node.value;
     }
 
     @Override

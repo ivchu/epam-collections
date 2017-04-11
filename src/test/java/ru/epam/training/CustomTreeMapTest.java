@@ -9,6 +9,7 @@ import java.util.stream.IntStream;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertFalse;
@@ -122,12 +123,54 @@ public class CustomTreeMapTest {
         );
     }
 
+    @Test(expected = NullPointerException.class)
+    public void testThatGetThrowsNPEIfKeyNull() {
+        m.get(null);
+    }
+
     @Test(expected = ClassCastException.class)
-    public void testValueContainsMethodThrowsExceptionOnWrongInputValueClass() {
+    public void testThatGetThrowsCCEForWrongClassKey() {
+        fillTreeMap();
+        m.get(new Object());
     }
 
     @Test
+    public void testThatGetWorksProperlyReturnsCorrectValueMultipleTimes() {
+        fillTreeMap();
+        IntStream.range(1, 10).forEach(
+                i -> assertThat(m.get(i), is("" + i))
+        );
+    }
+
+    @Test
+    public void testThatGetReturnsNullValueIfNoElementWithSuchKey() {
+        assertThat(m.get(100), is(nullValue()));
+    }
+
+
+    @Test
     public void testThatMapCalculateItsSizeProperly() {
+
+    }
+
+    private void fillTreeMap() {
+        m.put(0, "0");
+        m.put(10, "10");
+        m.put(1, "1");
+        m.put(20, "20");
+        m.put(2, "2");
+        m.put(90, "90");
+        m.put(3, "3");
+        m.put(4, "4");
+        m.put(5, "5");
+        m.put(9, "9");
+        m.put(8, "8");
+        m.put(7, "7");
+        m.put(6, "6");
+        m.put(80, "80");
+        m.put(70, "70");
+        m.put(60, "60");
+
     }
 
 
