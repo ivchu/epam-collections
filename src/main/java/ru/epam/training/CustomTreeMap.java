@@ -151,7 +151,8 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public void clear() {
-
+        root = null;
+        size = 0;
     }
 
     @Override

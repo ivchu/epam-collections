@@ -198,6 +198,22 @@ public class CustomTreeMapTest {
         assertEquals(size, m.size());
     }
 
+    @Test
+    public void testThatClearMethodResetsSizeToZero(){
+        fillTreeMap();
+        m.clear();
+        assertEquals(0, m.size());
+    }
+
+    @Test
+    public void testThatClearMethodRemovesValues(){
+        fillTreeMap();
+        m.clear();
+        IntStream.range(1, 10).forEach(
+                i -> assertThat(m.containsValue("" + i), is(false))
+        );
+    }
+
 
     private int fillTreeMap() {
         int size = 16;
