@@ -13,7 +13,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public boolean isEmpty() {
-        return true;
+        return root == null;
     }
 
     @Override

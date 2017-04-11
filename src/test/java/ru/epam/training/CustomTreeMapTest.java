@@ -147,13 +147,19 @@ public class CustomTreeMapTest {
         assertThat(m.get(100), is(nullValue()));
     }
 
+    @Test
+    public void testThatIsEmptyWorksCorrectly(){
+        assertTrue(m.isEmpty());
+        fillTreeMap();
+        assertFalse(m.isEmpty());
+    }
 
     @Test
     public void testThatMapCalculateItsSizeProperly() {
 
     }
 
-    
+
 
     private void fillTreeMap() {
         m.put(0, "0");
