@@ -184,4 +184,136 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     }
 
+    private class KeySet extends AbstractSet<K> {
+        @Override
+        public Iterator<K> iterator() {
+            return new KeyIterator();
+        }
+
+        @Override
+        public int size() {
+            return CustomTreeMap.this.size();
+        }
+
+        @Override
+        public boolean contains(Object o) {
+            return CustomTreeMap.this.containsKey(o);
+        }
+
+        @Override
+        public boolean remove(Object o) {
+            return CustomTreeMap.this.remove(o) != null;
+        }
+    }
+
+    private class ValueCollection extends AbstractCollection<V> {
+
+        @Override
+        public Iterator<V> iterator() {
+            return new ValueIterator();
+        }
+
+        @Override
+        public int size() {
+            return CustomTreeMap.this.size();
+        }
+
+        @Override
+        public boolean contains(Object o) {
+            return CustomTreeMap.this.containsValue(o);
+        }
+    }
+
+    private class EntrySet extends AbstractSet<Entry<K, V>> {
+        @Override
+        public Iterator<Entry<K, V>> iterator() {
+            return new EntryIterator();
+        }
+
+        @Override
+        public int size() {
+            return CustomTreeMap.this.size();
+        }
+
+        @Override
+        public boolean contains(Object o) {
+            if (o instanceof Map.Entry) {
+                return CustomTreeMap.this.containsKey(((Entry) o).getKey());
+            }
+            return false;
+        }
+
+        @Override
+        public boolean remove(Object o) {
+            if (o instanceof Map.Entry) {
+                return CustomTreeMap.this.remove(((Entry) o).getKey()) != null;
+            }
+            return false;
+        }
+    }
+
+    private abstract class TreeMapIterator implements Iterator {
+        private Node<K, V>[] nodeArray = new Node[size];
+        private int addIndex = 0;
+        private int currentIndex = 0;
+
+
+        TreeMapIterator() {
+            makeIterator(root);
+        }
+
+        private void makeIterator(Node<K, V> node) {
+            if (node == null) {
+                return;
+            }
+
+            makeIterator(node.left);
+            nodeArray[addIndex++] = node;
+            makeIterator(node.right);
+        }
+
+        @Override
+        public boolean hasNext() {
+
+            return currentIndex < nodeArray.length;
+        }
+
+        @Override
+        public Object next() {
+
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+
+            return nodeArray[currentIndex++];
+        }
+
+    }
+
+    private class EntryIterator extends TreeMapIterator {
+        @Override
+        public Entry<K, V> next() {
+            return (Entry<K, V>) super.next();
+        }
+
+    }
+
+    private class KeyIterator extends TreeMapIterator {
+        @Override
+        public K next() {
+            Entry<K, V> node = (Entry<K, V>) super.next();
+
+            return node.getKey();
+        }
+    }
+
+    private class ValueIterator extends TreeMapIterator {
+        @Override
+        public V next() {
+            Entry<K, V> node = (Entry<K, V>) super.next();
+
+            return node.getValue();
+        }
+    }
+
 }
