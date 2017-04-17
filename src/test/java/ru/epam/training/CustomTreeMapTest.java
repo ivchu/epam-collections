@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 
-import java.util.Map;
+import java.util.*;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -213,6 +213,167 @@ public class CustomTreeMapTest {
                 i -> assertThat(m.containsValue("" + i), is(false))
         );
     }
+
+    @Test
+    public void testThatKeySetMethodReturnsAllKeys() {
+        int putAmount = 34;
+        for (int i = 0; i < putAmount; i++) {
+            m.put(i, "ss" + i);
+        }
+        Set<Integer> setOfKeys = m.keySet();
+        for (int i = 0; i < putAmount; i++) {
+            assertTrue(setOfKeys.contains(i));
+        }
+    }
+
+    @Test
+    public void testThatKeySetMethodDontHaveMoreKeysThenInMap() {
+        int putAmount = 34;
+        for (int i = 0; i < putAmount; i++) {
+            m.put(i, "ss" + i);
+        }
+        Set<Integer> setOfKeys = m.keySet();
+        assertTrue(m.size() == setOfKeys.size());
+    }
+
+    @Test
+    public void testThatKeySetIteratorWorksWell() {
+        int putAmount = 34;
+        for (int i = 0; i < putAmount; i++) {
+            m.put(i, "ss" + i);
+        }
+        Set<Integer> setOfKeys = m.keySet();
+        Iterator iterator = setOfKeys.iterator();
+        int iteratedAmount = 0;
+        while (iterator.hasNext()) {
+            Object it = iterator.next();
+            assertTrue(setOfKeys.contains(it));
+            iteratedAmount++;
+        }
+        assertEquals(iteratedAmount, setOfKeys.size());
+    }
+
+    @Test
+    public void testThatValuesMethodReturnsAllValues() {
+        int putAmount = 34;
+        for (int i = 0; i < putAmount; i++) {
+            m.put(i, "ss" + i);
+        }
+        Collection<String> valueCollection = m.values();
+        System.out.println(valueCollection);
+        for (int i = 0; i < putAmount; i++) {
+            String sss = "ss" + i;
+            System.out.println((sss));
+//            assertTrue(valueCollection.contains("ss" + i));
+        }
+    }
+
+    @Test
+    public void testThatValuesMethodDontHaveMoreValuesThenInMap() {
+        int putAmount = 100;
+        for (int i = 0; i < putAmount; i++) {
+            m.put(i, "ss" + i);
+        }
+        Collection<String> valueCollection = m.values();
+        assertTrue(m.size() == valueCollection.size());
+    }
+
+    @Test
+    public void testThatValuesIteratorWorksWell() {
+        int putAmount = 34;
+        for (int i = 0; i < putAmount; i++) {
+            m.put(i, "ss" + i);
+        }
+        Collection<String> valueCollection = m.values();
+        Iterator iterator = valueCollection.iterator();
+        int iteratedAmount = 0;
+        while (iterator.hasNext()) {
+            Object it = iterator.next();
+            assertTrue(valueCollection.contains(it));
+            iteratedAmount++;
+        }
+        assertEquals(iteratedAmount, valueCollection.size());
+    }
+
+    @Test
+    public void testThatEntrySetMethodReturnsAllEntries() {
+        HashMap<Integer, String> testingMap = new HashMap<>();
+        int putAmount = 34;
+        for (int i = 0; i < putAmount; i++) {
+            m.put(i, "ss" + i);
+            testingMap.put(i, "ss" + i);
+        }
+        Set<Map.Entry<Integer, String>> entries = m.entrySet();
+        for (Map.Entry<Integer, String> mustBeIn : testingMap.entrySet()) {
+            assertTrue(entries.contains(mustBeIn));
+        }
+    }
+
+    @Test
+    public void testThatEntrySetMethodContainsReturnsFalseIfNoSuchEntry() {
+        HashMap<Integer, String> testingMap = new HashMap<>();
+        int putAmount = 34;
+        int notInMapEntries = 80;
+        for (int i = 0; i < putAmount; i++) {
+            m.put(i, "ss" + i);
+        }
+        for (int i = putAmount; i < notInMapEntries; i++) {
+            testingMap.put(i, "ss" + i);
+        }
+        Set<Map.Entry<Integer, String>> entries = m.entrySet();
+        for (Map.Entry<Integer, String> mustntBeIn : testingMap.entrySet()) {
+            assertFalse(entries.contains(mustntBeIn));
+        }
+        assertFalse(entries.contains(1));
+    }
+
+    @Test
+    public void testThatEntrySetMethodDontHaveMoreEntriesThenInMap() {
+        int putAmount = 34;
+        for (int i = 0; i < putAmount; i++) {
+            m.put(i, "ss" + i);
+        }
+        Set<Map.Entry<Integer, String>> entries = m.entrySet();
+        assertTrue(m.size() == entries.size());
+    }
+
+    @Test
+    public void testThatEntrySetIteratorWorksWell() {
+        int putAmount = 34;
+        for (int i = 0; i < putAmount; i++) {
+            m.put(i, "ss" + i);
+        }
+        Set<Map.Entry<Integer, String>> entries = m.entrySet();
+        Iterator iterator = entries.iterator();
+        int iteratedAmount = 0;
+        while (iterator.hasNext()) {
+            Object it = iterator.next();
+            assertTrue(entries.contains(it));
+            iteratedAmount++;
+        }
+        assertEquals(iteratedAmount, entries.size());
+    }
+
+    @Test
+    public void testThatPutAllInsertsAllElements() {
+        HashMap<Integer, String> insertMap = new HashMap<>();
+        int putAmount = 204;
+        for (int i = 0; i < putAmount; i++) {
+            insertMap.put(i, "ss" + i);
+        }
+        m.putAll(insertMap);
+        for (Map.Entry mustBeIn : insertMap.entrySet()) {
+            assertTrue(m.containsKey(mustBeIn.getKey()));
+            assertTrue(m.containsValue(mustBeIn.getValue()));
+        }
+        assertEquals(insertMap.size(), m.size());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public  void testThatPutAllMethodThrowsNPEIfInputMapIsNull(){
+        m.putAll(null);
+    }
+
 
 
     private int fillTreeMap() {

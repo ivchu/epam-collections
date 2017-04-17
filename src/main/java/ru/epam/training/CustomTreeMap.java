@@ -30,6 +30,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
             return value == null;
         } else {
             return root.value.equals(value);
+            
         }
     }
 
@@ -172,7 +173,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         return new EntrySet();
     }
 
-    private class Node<K extends Comparable<K>, V> {
+    private class Node<K extends Comparable<K>, V> implements Entry<K, V> {
         private final K key;
         private V value;
         private Node<K, V> left;
@@ -184,6 +185,22 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         }
 
 
+        @Override
+        public K getKey() {
+            return key;
+        }
+
+        @Override
+        public V getValue() {
+            return value;
+        }
+
+        @Override
+        public Object setValue(Object value) {
+            V oldValue = this.value;
+            this.value = (V) value;
+            return oldValue;
+        }
     }
 
     private class KeySet extends AbstractSet<K> {
@@ -226,10 +243,10 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         }
     }
 
-    private class EntrySet extends AbstractSet<Entry<K, V>> {
+    private class EntrySet extends AbstractSet<Map.Entry<K, V>> {
         @Override
-        public Iterator<Entry<K, V>> iterator() {
-            return new EntryIterator();
+        public Iterator<Map.Entry<K, V>> iterator() {
+            return new NodeIterator();
         }
 
         @Override
@@ -240,7 +257,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         @Override
         public boolean contains(Object o) {
             if (o instanceof Map.Entry) {
-                return CustomTreeMap.this.containsKey(((Entry) o).getKey());
+                return CustomTreeMap.this.containsKey(((Map.Entry) o).getKey());
             }
             return false;
         }
@@ -248,7 +265,7 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         @Override
         public boolean remove(Object o) {
             if (o instanceof Map.Entry) {
-                return CustomTreeMap.this.remove(((Entry) o).getKey()) != null;
+                return CustomTreeMap.this.remove(((Map.Entry) o).getKey()) != null;
             }
             return false;
         }
@@ -292,10 +309,10 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     }
 
-    private class EntryIterator extends TreeMapIterator {
+    private class NodeIterator extends TreeMapIterator {
         @Override
-        public Entry<K, V> next() {
-            return (Entry<K, V>) super.next();
+        public Node<K, V> next() {
+            return (Node<K, V>) super.next();
         }
 
     }
@@ -303,18 +320,18 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     private class KeyIterator extends TreeMapIterator {
         @Override
         public K next() {
-            Entry<K, V> node = (Entry<K, V>) super.next();
+            Node<K, V> node = (Node<K, V>) super.next();
 
-            return node.getKey();
+            return node.key;
         }
     }
 
     private class ValueIterator extends TreeMapIterator {
         @Override
         public V next() {
-            Entry<K, V> node = (Entry<K, V>) super.next();
+            Node<K, V> node = (Node<K, V>) super.next();
 
-            return node.getValue();
+            return node.value;
         }
     }
 
