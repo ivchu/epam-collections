@@ -260,11 +260,8 @@ public class CustomTreeMapTest {
             m.put(i, "ss" + i);
         }
         Collection<String> valueCollection = m.values();
-        System.out.println(valueCollection);
         for (int i = 0; i < putAmount; i++) {
-            String sss = "ss" + i;
-            System.out.println((sss));
-//            assertTrue(valueCollection.contains("ss" + i));
+            assertTrue(valueCollection.contains("ss" + i));
         }
     }
 

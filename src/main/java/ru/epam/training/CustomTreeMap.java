@@ -25,13 +25,19 @@ public class CustomTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     @Override
     public boolean containsValue(Object value) {
-        if (root == null) return false;
-        if (root.value == null) {
-            return value == null;
-        } else {
-            return root.value.equals(value);
-            
+        return getValue(root, (V) value);
+    }
+
+    private boolean getValue(Node<K, V> node, V value) {
+        if (node == null) {
+            return false;
+        } else if (node.getValue().equals(value)) {
+            return true;
         }
+        boolean containsInLeft = getValue(node.left, value);
+        boolean containsInRight = getValue(node.right, value);
+
+        return containsInLeft || containsInRight;
     }
 
     @Override
